@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: sf2-web-rs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sf2-web
+  template:
+    metadata:
+      labels:
+        app: sf2-web
+    spec:
+      containers:
+        - name: smallfish2web
+          image: localhost:5000/smallfish2web
+          ports:
+            - containerPort: 80

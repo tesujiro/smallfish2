@@ -1,7 +1,7 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata:
-  name: sf2-web-rs
+  name: sf2-web-deployment
 spec:
   replicas: 2
   selector:
@@ -17,3 +17,4 @@ spec:
           image: localhost:5000/smallfish2web
           ports:
             - containerPort: 80
+            - containerPort: 443

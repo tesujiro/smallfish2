@@ -31,7 +31,17 @@ pod_reset:
 
 .PHONY: apply
 apply:
-	kubectl apply -f deploy.yaml
+	kubectl apply -f deployment.yaml
+	kubectl apply -f service.yaml
+
+.PHONY: access_clusterip
+access_clusterip:
+	kubectl run --image=centos:6 --restart=Never --rm -i testpod -- curl -s http://`kubectl get svc|grep sf2-web-svc |awk '{print $$3}'`:8080/greet
+
+.PHONY: access_nodeport
+access_nodeport:
+	curl -s http://localhost:31080/greet
+	curl -s https://localhost:31443/greet -k
 
 SSL_KEY=ssl/server.key
 SSL_CSR=ssl/server.csr

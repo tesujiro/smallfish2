@@ -1,7 +1,7 @@
 MODULE=smallfish2web
 GOOS=linux
 REPO="localhost:5000"
-POD=sf2-web-rs-
+POD=sf2-web-
 
 build:
 	GOOS=$(GOOS) go build -o $(MODULE).$(GOOS)

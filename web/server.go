@@ -22,6 +22,7 @@ func main() {
 
 	// Kick HTTP Server
 	go func() {
+		fmt.Println("ListenAndServe :80")
 		err := http.ListenAndServe(":80", s.router)
 		if err != nil {
 			log.Fatal("ListenAndServe: ", err)
@@ -29,6 +30,7 @@ func main() {
 	}()
 
 	// Kick HTTPS Server
+	fmt.Println("ListenAndServeTLS :443")
 	err := http.ListenAndServeTLS(":443", "ssl/server.crt", "ssl/server.key", s.router)
 	if err != nil {
 		log.Fatal("ListenAndServeTLS: ", err)

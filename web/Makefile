@@ -3,7 +3,15 @@ GOOS=linux
 REPO="localhost:5000"
 POD=sf2-web-
 
+.PHONY: build
 build:
+	go build -o $(MODULE).$(GOOS)
+
+.PHONY: all
+all: build_linux container pod_reset
+
+.PHONY: build_linux
+build_linux:
 	GOOS=$(GOOS) go build -o $(MODULE).$(GOOS)
 test:
 	go test -v .

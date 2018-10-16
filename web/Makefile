@@ -5,7 +5,7 @@ POD=sf2-web-
 
 .PHONY: build
 build:
-	go build -o $(MODULE).$(GOOS)
+	go build -o $(MODULE)
 
 .PHONY: all
 all: build_linux container pod_reset

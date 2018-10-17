@@ -40,7 +40,28 @@ body {font-family: Arial;}
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
+    border-collapse: collapse;
 }
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    /*width: 100%;*/
+    border: 1px solid #ddd;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(odd) {
+    background-color: #f2f2f2
+}
+
+td.right { text-align: right; }
+td.center { text-align: center; }
+td.left { text-align: left; }
 </style>
 </head>
 <body>
@@ -67,10 +88,30 @@ body {font-family: Arial;}
 <div id="Tokyo" class="tabcontent">
   <h3>Tokyo</h3>
   <p>Tokyo is the capital of Japan.</p>
+  <table class="cities_table" id="cities_table" frame="border" rules"all">
+    <thead><tr>
+      <th class="center">NAME</th>
+      <th class="center">POPULATION</th>
+    </tr></thead>
+    <tbody id="cities">
+    </tbody>
+  </table>
 </div>
 
 <script>
-function openCity(evt, cityName) {
+function callServer(url, callback){
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            //console.log( 'COMPLETE! :'+xhr.responseText );
+            callback(xhr.responseText);
+	}
+    };
+    xhr.open( 'GET', url, true );
+    xhr.send( 'time='+Date.now() );
+};
+    
+function switchTab(evt, cityName){
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -81,7 +122,41 @@ function openCity(evt, cityName) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
     document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
+    //evt.currentTarget.className += " active";
+}
+
+function openCity(evt, cityName) {
+    switch(cityName){
+    case 'London':
+        switchTab(evt, cityName)
+        break;
+    case 'Paris':
+        switchTab(evt, cityName)
+        break;
+    case 'Tokyo':
+        callServer('/cities',function(response){
+	    //console.log(response)
+            let result = JSON.parse(response);
+            let df = document.createDocumentFragment();
+            for (i=0;i<result.list.length;i++){
+                let tr = document.createElement("tr");
+                let td = document.createElement("td");
+                td.innerHTML = result.list[i].name;
+                tr.appendChild(td);
+                td = document.createElement("td");
+                td.innerHTML = result.list[i].population;
+                td.className = "right";
+                tr.appendChild(td);
+                df.appendChild(tr);
+            }
+            table = document.getElementById("cities")
+            while (table.firstChild) table.removeChild(table.firstChild);
+            table.appendChild(df);
+	    //console.log('get:'+response)
+            switchTab(evt, cityName)
+	})
+        break;
+    }
 }
 </script>
 

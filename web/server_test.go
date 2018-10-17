@@ -17,10 +17,11 @@ func TestServer(t *testing.T) {
 		header map[string]string
 	}{
 		{method: "GET", url: "/greet", body: "Hello, World"},
-		{method: "GET", url: "/static/", body: "Hello, SmallFish2"},
+		{method: "GET", url: "/static/", status: http.StatusOK},
 		{method: "GET", url: "/static", status: http.StatusMovedPermanently},
 		{method: "GET", url: "/static/index.html", status: http.StatusMovedPermanently},
 		{method: "GET", url: "/no_page", status: http.StatusNotFound},
+		{method: "GET", url: "/cities", status: http.StatusOK},
 	}
 	srv := newServer()
 	srv.routes()
